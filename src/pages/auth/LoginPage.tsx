@@ -1,9 +1,12 @@
 import { Button, Grid, Input, Link, Text } from "@geist-ui/core";
 import { LogIn } from "@geist-ui/icons";
 import { useNavigate } from "react-router-dom";
+import { useAppDispatch } from "../../store";
+import { login } from "./authSlice";
 
 const LoginPage = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   return (
     <>
@@ -20,7 +23,15 @@ const LoginPage = () => {
           ></Input.Password>
         </Grid>
         <Grid>
-          <Button type="success" width="100%" icon={<LogIn />}>
+          <Button
+            type="success"
+            width="100%"
+            icon={<LogIn />}
+            onClick={() => {
+              dispatch(login({ token: "dsads", username: "Lukas" }));
+              navigate("/");
+            }}
+          >
             Login
           </Button>
         </Grid>

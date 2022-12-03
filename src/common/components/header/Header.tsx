@@ -1,8 +1,9 @@
 import { css } from "@emotion/react";
-import { Button, GeistUIThemes, useTheme } from "@geist-ui/core";
+import { Button, GeistUIThemes, Link, useTheme } from "@geist-ui/core";
 import { Moon, Sun } from "@geist-ui/icons";
 import { useDispatch } from "react-redux";
-import { toggleTheme } from "../../../slices/themeSlice";
+import { useNavigate } from "react-router-dom";
+import { selectTheme, toggleTheme } from "../../../slices/themeSlice";
 import { useAppSelector } from "../../../store";
 
 const navCss = (theme: GeistUIThemes) => css`
@@ -45,7 +46,8 @@ const controlsCss = css`
 const Header = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
-  const color = useAppSelector((x) => x.theme.color);
+  const navigate = useNavigate();
+  const color = useAppSelector(selectTheme).color;
 
   return (
     <div
@@ -55,7 +57,14 @@ const Header = () => {
     >
       <nav css={navCss(theme)}>
         <div css={containerCss(theme)}>
-          <div css={logoCss}>TODO:</div>
+          <Link
+            onClick={(e) => {
+              e.preventDefault();
+              navigate("/");
+            }}
+          >
+            <div css={logoCss}>TODO:</div>
+          </Link>
           <div css={controlsCss}>
             <Button
               onClick={() => {
