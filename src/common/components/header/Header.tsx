@@ -22,7 +22,7 @@ const containerCss = (theme: GeistUIThemes) => css`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  max-width: 1000px;
+  max-width: 1200px;
   height: 100%;
   margin: 0 auto;
   user-select: none;

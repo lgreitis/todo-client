@@ -1,12 +1,12 @@
 import { CssBaseline, GeistProvider } from "@geist-ui/core";
 import { Route, Routes } from "react-router-dom";
 import Header from "./common/components/header/Header";
+import PageLayout from "./common/components/PageLayout";
 import AuthPage from "./pages/auth/AuthPage";
 import { selectAuth } from "./pages/auth/authSlice";
 import AuthLayout from "./pages/auth/components/AuthLayout";
 import LoginPage from "./pages/auth/LoginPage";
 import SignUpPage from "./pages/auth/SignUpPage";
-import IndexLayout from "./pages/index/components/indexLayout";
 import IndexPage from "./pages/index/IndexPage";
 import { selectTheme } from "./slices/themeSlice";
 import { useAppSelector } from "./store";
@@ -21,7 +21,7 @@ const App = () => {
       <Header />
       <Routes>
         {auth.token ? (
-          <Route element={<IndexLayout />}>
+          <Route element={<PageLayout />}>
             <Route path="/" element={<IndexPage />}></Route>
           </Route>
         ) : (
