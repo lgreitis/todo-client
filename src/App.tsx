@@ -8,7 +8,7 @@ import { selectAuth } from "./pages/auth/authSlice";
 import AuthLayout from "./pages/auth/components/AuthLayout";
 import LoginPage from "./pages/auth/LoginPage";
 import SignUpPage from "./pages/auth/SignUpPage";
-import Page404 from "./pages/index/error/Page404";
+import Page404 from "./pages/error/Page404";
 import IndexPage from "./pages/index/IndexPage";
 import Invites from "./pages/invites/Invites";
 import { selectTheme } from "./slices/themeSlice";
