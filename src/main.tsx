@@ -1,4 +1,3 @@
-import NiceModal from "@ebay/nice-modal-react";
 import { css, Global } from "@emotion/react";
 import React from "react";
 import ReactDOM from "react-dom/client";
@@ -35,11 +34,10 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
           }
         `}
       />
-      <NiceModal.Provider>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </NiceModal.Provider>
+
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
     </Provider>
   </React.StrictMode>
 );

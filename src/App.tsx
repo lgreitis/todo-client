@@ -1,3 +1,4 @@
+import NiceModal from "@ebay/nice-modal-react";
 import { CssBaseline, GeistProvider } from "@geist-ui/core";
 import { Route, Routes } from "react-router-dom";
 import Header from "./common/components/header/Header";
@@ -17,21 +18,23 @@ const App = () => {
 
   return (
     <GeistProvider themeType={color}>
-      <CssBaseline />
-      <Header />
-      <Routes>
-        {auth.token ? (
-          <Route element={<PageLayout />}>
-            <Route path="/" element={<IndexPage />}></Route>
-          </Route>
-        ) : (
-          <Route element={<AuthLayout />}>
-            <Route path="/" element={<AuthPage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/signup" element={<SignUpPage />} />
-          </Route>
-        )}
-      </Routes>
+      <NiceModal.Provider>
+        <CssBaseline />
+        <Header />
+        <Routes>
+          {auth.token ? (
+            <Route element={<PageLayout />}>
+              <Route path="/" element={<IndexPage />}></Route>
+            </Route>
+          ) : (
+            <Route element={<AuthLayout />}>
+              <Route path="/" element={<AuthPage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/signup" element={<SignUpPage />} />
+            </Route>
+          )}
+        </Routes>
+      </NiceModal.Provider>
     </GeistProvider>
   );
 };
