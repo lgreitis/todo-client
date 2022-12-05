@@ -8,7 +8,9 @@ import { selectAuth } from "./pages/auth/authSlice";
 import AuthLayout from "./pages/auth/components/AuthLayout";
 import LoginPage from "./pages/auth/LoginPage";
 import SignUpPage from "./pages/auth/SignUpPage";
+import Page404 from "./pages/index/error/Page404";
 import IndexPage from "./pages/index/IndexPage";
+import Invites from "./pages/invites/Invites";
 import { selectTheme } from "./slices/themeSlice";
 import { useAppSelector } from "./store";
 
@@ -22,9 +24,11 @@ const App = () => {
         <CssBaseline />
         <Header />
         <Routes>
+          <Route path="*" element={<Page404 />} />
           {auth.token ? (
             <Route element={<PageLayout />}>
-              <Route path="/" element={<IndexPage />}></Route>
+              <Route path="/" element={<IndexPage />} />
+              <Route path="/invites/:id" element={<Invites />} />
             </Route>
           ) : (
             <Route element={<AuthLayout />}>

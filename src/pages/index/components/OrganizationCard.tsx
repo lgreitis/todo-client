@@ -1,15 +1,9 @@
 import NiceModal from "@ebay/nice-modal-react";
 import { css } from "@emotion/react";
-import {
-  Button,
-  Card,
-  GeistUIThemes,
-  Text,
-  Tooltip,
-  useTheme,
-} from "@geist-ui/core";
-import { Book, Edit2, MessageSquare } from "@geist-ui/icons";
-import { ReactNode } from "react";
+import { Card, GeistUIThemes, Text, useTheme } from "@geist-ui/core";
+import { Book, Edit2, MessageSquare, Trash } from "@geist-ui/icons";
+import { useNavigate } from "react-router-dom";
+import SmallButtonWithToggle from "../../../common/components/SmallButtonWithTooltip";
 import ConfirmDelete from "../../../modals/ConfirmDelete";
 import EditOrganization from "../modals/EditOrganization";
 
@@ -55,7 +49,8 @@ interface Props {
 
 const OrganizationCard = (props: Props) => {
   const theme = useTheme();
-  const { name, ownerName, userCount, fileCount, onClick } = props;
+  const navigate = useNavigate();
+  const { name, ownerName, userCount, fileCount, id, onClick } = props;
 
   return (
     <Card hoverable width="100%" onClick={onClick} css={cardCss(theme)}>
@@ -100,21 +95,23 @@ const OrganizationCard = (props: Props) => {
               gap: ${theme.layout.gapQuarter};
             `}
           >
-            <CardButton
+            <SmallButtonWithToggle
               tooltipText="Invites"
               icon={<MessageSquare />}
-              onClick={() => {}}
+              onClick={() => {
+                navigate(`/invites/${id}`);
+              }}
             />
-            <CardButton
+            <SmallButtonWithToggle
               tooltipText="Edit"
               icon={<Edit2 />}
               onClick={() => {
                 NiceModal.show(EditOrganization);
               }}
             />
-            <CardButton
+            <SmallButtonWithToggle
               tooltipText="Delete"
-              icon={<MessageSquare />}
+              icon={<Trash />}
               onClick={() => {
                 NiceModal.show(ConfirmDelete, { itemType: "organization" });
               }}
@@ -127,25 +124,3 @@ const OrganizationCard = (props: Props) => {
 };
 
 export default OrganizationCard;
-
-interface CardButtonProps {
-  tooltipText: string;
-  onClick: () => void;
-  icon: ReactNode;
-}
-
-const CardButton = (props: CardButtonProps) => {
-  const { tooltipText, onClick, icon } = props;
-
-  return (
-    <Tooltip text={tooltipText} scale={2 / 3} leaveDelay={0}>
-      <Button
-        iconRight={icon}
-        auto
-        scale={1.5 / 3}
-        px={0.6}
-        onClick={onClick}
-      />
-    </Tooltip>
-  );
-};
