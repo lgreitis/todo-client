@@ -36,7 +36,8 @@ const customFetchBase: BaseQueryFn<
     (result.error &&
       (result.error?.data as { message: string }).message ===
         "Invalid token") ||
-    (result.data as { message: string }).message === "Invalid token"
+    (result.data &&
+      (result.data as { message: string }).message === "Invalid token")
   ) {
     if (!mutex.isLocked()) {
       const release = await mutex.acquire();

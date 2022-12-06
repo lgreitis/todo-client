@@ -5,6 +5,7 @@ import {
   Code,
   Grid,
   Input,
+  Loading,
   Text,
   useMediaQuery,
   useTheme,
@@ -12,42 +13,12 @@ import {
 import { Plus, Search } from "@geist-ui/icons";
 import Fuse from "fuse.js";
 import { useEffect, useState } from "react";
+import { useGetOrganizationsQuery } from "../../api/organizationApi";
 import { selectUser } from "../../slices/userSlice";
 import { useAppSelector } from "../../store";
+import { Organization } from "../../types";
 import OrganizationCard from "./components/OrganizationCard";
 import AddNewOrganization from "./modals/AddNewOrganization";
-
-interface Organization {
-  name: string;
-  ownerName: string;
-  userCount: number;
-  fileCount: number;
-  id: string;
-}
-
-const organizations: Organization[] = [
-  {
-    name: "Pyzduku stabas",
-    ownerName: "Lukas",
-    userCount: 5,
-    fileCount: 10,
-    id: "fsdf34241fsdf",
-  },
-  {
-    name: "Dunduliuku komanda",
-    ownerName: "Lukas",
-    userCount: 2,
-    fileCount: 84,
-    id: "fdsfl234jkmxc",
-  },
-  {
-    name: "Luko pinigu plovimo programa",
-    ownerName: "Lukas",
-    userCount: 10,
-    fileCount: 126,
-    id: "bjvoicxjv3234fd",
-  },
-];
 
 const IndexPage = () => {
   const theme = useTheme();
@@ -57,10 +28,19 @@ const IndexPage = () => {
 
   const user = useAppSelector(selectUser);
 
+  const {
+    isLoading,
+    data: organizations,
+    isFetching,
+  } = useGetOrganizationsQuery();
   const [search, setSearch] = useState("");
-  const [filtered, setFiltered] = useState<Organization[]>(organizations);
+  const [filtered, setFiltered] = useState<Organization[]>([]);
 
   useEffect(() => {
+    if (!organizations) {
+      return;
+    }
+
     if (!search) {
       setFiltered(organizations);
       return;
@@ -69,11 +49,10 @@ const IndexPage = () => {
     const fuse = new Fuse(organizations, { threshold: 0.4, keys: ["name"] });
     const res = fuse.search(search);
     setFiltered(res.map((el) => el.item));
-  }, [search]);
+  }, [search, organizations]);
 
   return (
     <>
-      {" "}
       <Text h3 pl={0.5}>
         Welcome back, <Code pr={0}>{user.username}</Code>
       </Text>
@@ -91,7 +70,7 @@ const IndexPage = () => {
             onChange={(e) => {
               setSearch(e.target.value);
             }}
-          ></Input>
+          />
         </Grid>
         <Grid md={4} sm={1}>
           <Button
@@ -107,9 +86,16 @@ const IndexPage = () => {
             {!isSmall ? "Add New" : null}
           </Button>
         </Grid>
+        {(isLoading || isFetching) && <Loading pb={1} pt={0.5} />}
         {filtered.map((el) => (
           <Grid md={8} sm={12} xs={24} key={el.id}>
-            <OrganizationCard {...el} />
+            <OrganizationCard
+              id={el.id}
+              fileCount={el._count.files}
+              name={el.name}
+              ownerName={el.ownerUser.username}
+              userCount={el._count.users}
+            />
           </Grid>
         ))}
       </Grid.Container>

@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import { authApi } from "./api/authApi";
+import { organizationApi } from "./api/organizationApi";
 import { userApi } from "./api/userApi";
 import authSlice from "./slices/authSlice";
 import themeSlice from "./slices/themeSlice";
@@ -13,9 +14,11 @@ const store = configureStore({
     user: userSlice,
     [userApi.reducerPath]: userApi.reducer,
     [authApi.reducerPath]: authApi.reducer,
+    [organizationApi.reducerPath]: organizationApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
+      .concat(organizationApi.middleware)
       .concat(userApi.middleware)
       .concat(authApi.middleware),
 });

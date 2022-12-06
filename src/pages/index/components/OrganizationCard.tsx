@@ -1,8 +1,9 @@
 import NiceModal from "@ebay/nice-modal-react";
 import { css } from "@emotion/react";
-import { Card, GeistUIThemes, Text, useTheme } from "@geist-ui/core";
+import { Card, GeistUIThemes, Text, useTheme, useToasts } from "@geist-ui/core";
 import { Book, Edit2, MessageSquare, Trash } from "@geist-ui/icons";
 import { useNavigate } from "react-router-dom";
+import { useDeleteOrganizationMutation } from "../../../api/organizationApi";
 import SmallButtonWithToggle from "../../../components/SmallButtonWithTooltip";
 import ConfirmDelete from "../../../modals/ConfirmDelete";
 import EditOrganization from "../modals/EditOrganization";
@@ -50,6 +51,8 @@ interface Props {
 const OrganizationCard = (props: Props) => {
   const theme = useTheme();
   const navigate = useNavigate();
+  const { setToast } = useToasts();
+  const [submitDelete] = useDeleteOrganizationMutation();
   const { name, ownerName, userCount, fileCount, id, onClick } = props;
 
   return (
@@ -106,14 +109,28 @@ const OrganizationCard = (props: Props) => {
               tooltipText="Edit"
               icon={<Edit2 />}
               onClick={() => {
-                NiceModal.show(EditOrganization);
+                NiceModal.show(EditOrganization, { id, name });
               }}
             />
             <SmallButtonWithToggle
               tooltipText="Delete"
               icon={<Trash />}
               onClick={() => {
-                NiceModal.show(ConfirmDelete, { itemType: "organization" });
+                NiceModal.show(ConfirmDelete, {
+                  itemType: "organization",
+                  confirm: () => {
+                    submitDelete(id)
+                      .unwrap()
+                      .then(() => {
+                        setToast({
+                          text: "Organization removed",
+                          type: "success",
+                        });
+                      });
+
+                    NiceModal.hide(ConfirmDelete);
+                  },
+                });
               }}
             />
           </div>

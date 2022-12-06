@@ -14,3 +14,10 @@ export interface ValueLabel {
   value: string;
   label: string;
 }
+
+export interface Organization {
+  id: string;
+  name: string;
+  ownerUser: { username: string };
+  _count: { files: number; users: number };
+}
