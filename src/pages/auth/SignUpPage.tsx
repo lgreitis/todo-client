@@ -5,8 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { z } from "zod";
 import { toFormikValidationSchema } from "zod-formik-adapter";
 import { usePostRegisterMutation } from "../../api/authApi";
-import CustomInput from "../../common/components/input/CustomInput";
-import CustomPasswordInput from "../../common/components/input/CustomPasswordInput";
+import CustomInput from "../../components/input/CustomInput";
+import CustomPasswordInput from "../../components/input/CustomPasswordInput";
 import { login } from "../../slices/authSlice";
 import { useAppDispatch } from "../../store";
 

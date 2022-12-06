@@ -1,9 +1,9 @@
 import NiceModal from "@ebay/nice-modal-react";
 import { CssBaseline, GeistProvider } from "@geist-ui/core";
 import { Route, Routes } from "react-router-dom";
-import Header from "./common/components/header/Header";
-import PageLayout from "./common/components/PageLayout";
 import AuthMiddleware from "./components/AuthMiddleware";
+import Header from "./components/header/Header";
+import PageLayout from "./components/PageLayout";
 import OrganizationAdminPage from "./pages/admin/OrganizationAdminPage";
 import UserAdminPage from "./pages/admin/UserAdminPage";
 import AuthPage from "./pages/auth/AuthPage";

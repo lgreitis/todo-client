@@ -1,7 +1,7 @@
 import { css } from "@emotion/react";
 import { Code, Table, Text, useTheme } from "@geist-ui/core";
 import { Copy, Edit2, ToggleRight, Trash } from "@geist-ui/icons";
-import SmallButtonWithToggle from "../../common/components/SmallButtonWithTooltip";
+import SmallButtonWithToggle from "../../components/SmallButtonWithTooltip";
 
 const Controls = (
   value: string | number | boolean,

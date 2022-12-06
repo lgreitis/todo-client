@@ -3,7 +3,7 @@ import { css } from "@emotion/react";
 import { Card, GeistUIThemes, Text, useTheme } from "@geist-ui/core";
 import { Book, Edit2, MessageSquare, Trash } from "@geist-ui/icons";
 import { useNavigate } from "react-router-dom";
-import SmallButtonWithToggle from "../../../common/components/SmallButtonWithTooltip";
+import SmallButtonWithToggle from "../../../components/SmallButtonWithTooltip";
 import ConfirmDelete from "../../../modals/ConfirmDelete";
 import EditOrganization from "../modals/EditOrganization";
 

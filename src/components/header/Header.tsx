@@ -10,10 +10,10 @@ import {
 import { Moon, Sun } from "@geist-ui/icons";
 import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
-import { selectTheme, toggleTheme } from "../../../slices/themeSlice";
-import { selectUser } from "../../../slices/userSlice";
-import { useAppSelector } from "../../../store";
-import { addColorAlpha } from "../../../utils/color";
+import { selectTheme, toggleTheme } from "../../slices/themeSlice";
+import { selectUser } from "../../slices/userSlice";
+import { useAppSelector } from "../../store";
+import { addColorAlpha } from "../../utils/color";
 import Settings from "./components/Settings";
 
 const navCss = (theme: GeistUIThemes) => css`
