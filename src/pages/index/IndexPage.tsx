@@ -1,9 +1,19 @@
 import NiceModal from "@ebay/nice-modal-react";
 import { css } from "@emotion/react";
-import { Button, Grid, Input, useMediaQuery, useTheme } from "@geist-ui/core";
+import {
+  Button,
+  Code,
+  Grid,
+  Input,
+  Text,
+  useMediaQuery,
+  useTheme,
+} from "@geist-ui/core";
 import { Plus, Search } from "@geist-ui/icons";
 import Fuse from "fuse.js";
 import { useEffect, useState } from "react";
+import { selectUser } from "../../slices/userSlice";
+import { useAppSelector } from "../../store";
 import OrganizationCard from "./components/OrganizationCard";
 import AddNewOrganization from "./modals/AddNewOrganization";
 
@@ -45,6 +55,8 @@ const IndexPage = () => {
   const isXS = useMediaQuery("xs");
   const isSmall = isSM || isXS;
 
+  const user = useAppSelector(selectUser);
+
   const [search, setSearch] = useState("");
   const [filtered, setFiltered] = useState<Organization[]>(organizations);
 
@@ -61,6 +73,9 @@ const IndexPage = () => {
 
   return (
     <Grid.Container gap={1} width="100%" ml={0}>
+      <Text h3 pl={0.5}>
+        Welcome back, <Code pr={0}>{user.username}</Code>
+      </Text>
       <Grid md={20} sm={22} xs>
         <Input
           css={css`

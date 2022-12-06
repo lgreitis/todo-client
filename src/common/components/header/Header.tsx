@@ -11,8 +11,10 @@ import { Moon, Sun } from "@geist-ui/icons";
 import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { selectTheme, toggleTheme } from "../../../slices/themeSlice";
+import { selectUser } from "../../../slices/userSlice";
 import { useAppSelector } from "../../../store";
 import { addColorAlpha } from "../../../utils/color";
+import Settings from "./components/Settings";
 
 const navCss = (theme: GeistUIThemes) => css`
   position: fixed;
@@ -73,7 +75,7 @@ interface Tab {
 }
 
 const tabs: Tab[] = [
-  { label: "home", value: "/" },
+  { label: "HOME", value: "/" },
   { label: "ORGANIZATIONS", value: "/admin/organization" },
   { label: "USERS", value: "/admin/user" },
 ];
@@ -83,6 +85,7 @@ const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
+  const user = useAppSelector(selectUser);
   const color = useAppSelector(selectTheme).color;
 
   const handleTabChange = (val: string) => {
@@ -107,31 +110,37 @@ const Header = () => {
               <Text b>TODO:</Text>
             </div>
           </Link>
-          <div css={tabsCss(theme)}>
-            <Tabs
-              value={location.pathname}
-              initialValue="Home"
-              hideDivider
-              hideBorder
-              align="center"
-              onChange={handleTabChange}
-            >
-              {tabs.map((el) => (
-                <Tabs.Item font="14px" key={el.value} {...el} />
-              ))}
-            </Tabs>
-          </div>
+          {user.role === "SUPERADMIN" && (
+            <div css={tabsCss(theme)}>
+              <Tabs
+                value={location.pathname}
+                initialValue="Home"
+                hideDivider
+                hideBorder
+                align="center"
+                onChange={handleTabChange}
+              >
+                {tabs.map((el) => (
+                  <Tabs.Item font="14px" key={el.value} {...el} />
+                ))}
+              </Tabs>
+            </div>
+          )}
           <div css={controlsCss}>
-            <Button
-              onClick={() => {
-                dispatch(toggleTheme());
-              }}
-              icon={color === "light" ? <Sun /> : <Moon />}
-              auto
-              scale={2 / 3}
-            >
-              {color}
-            </Button>
+            {user.id ? (
+              <Settings />
+            ) : (
+              <Button
+                onClick={() => {
+                  dispatch(toggleTheme());
+                }}
+                icon={color === "light" ? <Sun /> : <Moon />}
+                auto
+                scale={2 / 3}
+              >
+                {color}
+              </Button>
+            )}
           </div>
         </div>
       </nav>

@@ -14,6 +14,7 @@ export default defineConfig({
   server: {
     cors: {
       allowedHeaders: "*",
+      origin: "*",
     },
   },
   define: {

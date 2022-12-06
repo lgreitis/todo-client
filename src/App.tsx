@@ -3,16 +3,17 @@ import { CssBaseline, GeistProvider } from "@geist-ui/core";
 import { Route, Routes } from "react-router-dom";
 import Header from "./common/components/header/Header";
 import PageLayout from "./common/components/PageLayout";
+import AuthMiddleware from "./components/AuthMiddleware";
 import OrganizationAdminPage from "./pages/admin/OrganizationAdminPage";
 import UserAdminPage from "./pages/admin/UserAdminPage";
 import AuthPage from "./pages/auth/AuthPage";
-import { selectAuth } from "./pages/auth/authSlice";
 import AuthLayout from "./pages/auth/components/AuthLayout";
 import LoginPage from "./pages/auth/LoginPage";
 import SignUpPage from "./pages/auth/SignUpPage";
 import Page404 from "./pages/error/Page404";
 import IndexPage from "./pages/index/IndexPage";
 import Invites from "./pages/invites/Invites";
+import { selectAuth } from "./slices/authSlice";
 import { selectTheme } from "./slices/themeSlice";
 import { useAppSelector } from "./store";
 
@@ -24,27 +25,31 @@ const App = () => {
     <GeistProvider themeType={color}>
       <NiceModal.Provider>
         <CssBaseline />
-        <Header />
-        <Routes>
-          <Route path="*" element={<Page404 />} />
-          {auth.token ? (
-            <Route element={<PageLayout />}>
-              <Route path="/" element={<IndexPage />} />
-              <Route path="/invites/:id" element={<Invites />} />
-              <Route
-                path="/admin/organization"
-                element={<OrganizationAdminPage />}
-              />
-              <Route path="/admin/user" element={<UserAdminPage />} />
-            </Route>
-          ) : (
-            <Route element={<AuthLayout />}>
-              <Route path="/" element={<AuthPage />} />
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/signup" element={<SignUpPage />} />
-            </Route>
-          )}
-        </Routes>
+        <AuthMiddleware>
+          <>
+            <Header />
+            <Routes>
+              <Route path="*" element={<Page404 />} />
+              {auth.refreshToken ? (
+                <Route element={<PageLayout />}>
+                  <Route path="/" element={<IndexPage />} />
+                  <Route path="/invites/:id" element={<Invites />} />
+                  <Route
+                    path="/admin/organization"
+                    element={<OrganizationAdminPage />}
+                  />
+                  <Route path="/admin/user" element={<UserAdminPage />} />
+                </Route>
+              ) : (
+                <Route element={<AuthLayout />}>
+                  <Route path="/" element={<AuthPage />} />
+                  <Route path="/login" element={<LoginPage />} />
+                  <Route path="/signup" element={<SignUpPage />} />
+                </Route>
+              )}
+            </Routes>
+          </>
+        </AuthMiddleware>
       </NiceModal.Provider>
     </GeistProvider>
   );
