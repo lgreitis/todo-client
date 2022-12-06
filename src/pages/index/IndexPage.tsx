@@ -72,45 +72,48 @@ const IndexPage = () => {
   }, [search]);
 
   return (
-    <Grid.Container gap={1} width="100%" ml={0}>
+    <>
+      {" "}
       <Text h3 pl={0.5}>
         Welcome back, <Code pr={0}>{user.username}</Code>
       </Text>
-      <Grid md={20} sm={22} xs>
-        <Input
-          css={css`
-            background-color: ${theme.palette.background};
-          `}
-          scale={4 / 3}
-          placeholder="Search..."
-          width="100%"
-          icon={<Search />}
-          clearable
-          onChange={(e) => {
-            setSearch(e.target.value);
-          }}
-        ></Input>
-      </Grid>
-      <Grid md={4} sm={1}>
-        <Button
-          type="secondary"
-          width={!isSmall ? "100%" : undefined}
-          auto={isSmall}
-          icon={<Plus />}
-          px={0.6}
-          onClick={() => {
-            NiceModal.show(AddNewOrganization);
-          }}
-        >
-          {!isSmall ? "Add New" : null}
-        </Button>
-      </Grid>
-      {filtered.map((el) => (
-        <Grid md={8} sm={12} xs={24} key={el.id}>
-          <OrganizationCard {...el} />
+      <Grid.Container gap={1} width="100%" ml={0}>
+        <Grid md={20} sm={22} xs>
+          <Input
+            css={css`
+              background-color: ${theme.palette.background};
+            `}
+            scale={4 / 3}
+            placeholder="Search..."
+            width="100%"
+            icon={<Search />}
+            clearable
+            onChange={(e) => {
+              setSearch(e.target.value);
+            }}
+          ></Input>
         </Grid>
-      ))}
-    </Grid.Container>
+        <Grid md={4} sm={1}>
+          <Button
+            type="secondary"
+            width={!isSmall ? "100%" : undefined}
+            auto={isSmall}
+            icon={<Plus />}
+            px={0.6}
+            onClick={() => {
+              NiceModal.show(AddNewOrganization);
+            }}
+          >
+            {!isSmall ? "Add New" : null}
+          </Button>
+        </Grid>
+        {filtered.map((el) => (
+          <Grid md={8} sm={12} xs={24} key={el.id}>
+            <OrganizationCard {...el} />
+          </Grid>
+        ))}
+      </Grid.Container>
+    </>
   );
 };
 

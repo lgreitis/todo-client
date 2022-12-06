@@ -1,20 +1,14 @@
 import { css } from "@emotion/react";
-import {
-  Button,
-  GeistUIThemes,
-  Link,
-  Tabs,
-  Text,
-  useTheme,
-} from "@geist-ui/core";
-import { Moon, Sun } from "@geist-ui/icons";
-import { useDispatch } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom";
-import { selectTheme, toggleTheme } from "../../slices/themeSlice";
+import { GeistUIThemes, useMediaQuery, useTheme } from "@geist-ui/core";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { selectUser } from "../../slices/userSlice";
 import { useAppSelector } from "../../store";
 import { addColorAlpha } from "../../utils/color";
-import Settings from "./components/Settings";
+import HamburgerButton from "./components/HamburgerButton";
+import HeaderDesktop from "./components/HeaderDesktop";
+import HeaderMobile from "./components/HeaderMobile";
+import Logo from "./components/Logo";
 
 const navCss = (theme: GeistUIThemes) => css`
   position: fixed;
@@ -41,56 +35,15 @@ const containerCss = (theme: GeistUIThemes) => css`
   padding: 0 ${theme.layout.gap};
 `;
 
-const logoCss = css`
-  flex: 1 1;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-`;
-
-const controlsCss = css`
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-`;
-
-const tabsCss = (theme: GeistUIThemes) => css`
-  display: flex;
-  flex: 1 1;
-  align-items: center;
-  justify-content: center;
-
-  .scroll-container {
-    padding: 0 ${theme.layout.gap} !important;
-  }
-
-  .content {
-    display: none;
-  }
-`;
-
-interface Tab {
-  label: string;
-  value: string;
-}
-
-const tabs: Tab[] = [
-  { label: "HOME", value: "/" },
-  { label: "ORGANIZATIONS", value: "/admin/organization" },
-  { label: "USERS", value: "/admin/user" },
-];
-
 const Header = () => {
   const theme = useTheme();
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const location = useLocation();
   const user = useAppSelector(selectUser);
-  const color = useAppSelector(selectTheme).color;
+  const navigate = useNavigate();
+  const isSM = useMediaQuery("sm");
+  const isXS = useMediaQuery("xs");
+  const isSmall = isSM || isXS;
 
-  const handleTabChange = (val: string) => {
-    navigate(val);
-  };
+  const [open, setOpen] = useState(false);
 
   return (
     <div
@@ -100,49 +53,19 @@ const Header = () => {
     >
       <nav css={navCss(theme)}>
         <div css={containerCss(theme)}>
-          <Link
+          <Logo
             onClick={(e) => {
               e.preventDefault();
               navigate("/");
             }}
-          >
-            <div css={logoCss}>
-              <Text b>TODO:</Text>
-            </div>
-          </Link>
-          {user.role === "SUPERADMIN" && (
-            <div css={tabsCss(theme)}>
-              <Tabs
-                value={location.pathname}
-                initialValue="Home"
-                hideDivider
-                hideBorder
-                align="center"
-                onChange={handleTabChange}
-              >
-                {tabs.map((el) => (
-                  <Tabs.Item font="14px" key={el.value} {...el} />
-                ))}
-              </Tabs>
-            </div>
+          />
+          {isSmall && user.id ? (
+            <HamburgerButton onClick={() => setOpen((prev) => !prev)} />
+          ) : (
+            <HeaderDesktop />
           )}
-          <div css={controlsCss}>
-            {user.id ? (
-              <Settings />
-            ) : (
-              <Button
-                onClick={() => {
-                  dispatch(toggleTheme());
-                }}
-                icon={color === "light" ? <Sun /> : <Moon />}
-                auto
-                scale={2 / 3}
-              >
-                {color}
-              </Button>
-            )}
-          </div>
         </div>
+        {open && isSmall && <HeaderMobile hidePanel={() => setOpen(false)} />}
       </nav>
     </div>
   );

@@ -1,6 +1,6 @@
 import { css } from "@emotion/react";
 import { GeistUIThemes, Popover, useTheme } from "@geist-ui/core";
-import { Moon, Settings as SettingsIcon, Sun } from "@geist-ui/icons";
+import { LogOut, Moon, Settings as SettingsIcon, Sun } from "@geist-ui/icons";
 import { useDispatch } from "react-redux";
 import { logout } from "../../../slices/authSlice";
 import { selectTheme, toggleTheme } from "../../../slices/themeSlice";
@@ -31,7 +31,7 @@ const Settings = () => {
       <Popover.Item padding={0} onClick={() => dispatch(toggleTheme())}>
         <div css={buttonCss(theme)}>
           {color === "light" ? <Sun /> : <Moon />}
-          {color.charAt(0).toUpperCase() + color.slice(1)}
+          {color.toUpperCase()}
         </div>
       </Popover.Item>
       <Popover.Item line />
@@ -42,7 +42,8 @@ const Settings = () => {
             dispatch(logout());
           }}
         >
-          Logout
+          <LogOut />
+          LOGOUT
         </div>
       </Popover.Item>
     </>
