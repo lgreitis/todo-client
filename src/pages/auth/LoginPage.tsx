@@ -43,7 +43,7 @@ const LoginPage = () => {
             }}
             color
           >
-            Don't have an account? Sign Up
+            Don&apos;t have an account? Sign Up
           </Link>
         </Grid>
       </Grid.Container>

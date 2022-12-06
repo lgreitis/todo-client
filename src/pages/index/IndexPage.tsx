@@ -60,7 +60,7 @@ const IndexPage = () => {
   }, [search]);
 
   return (
-    <Grid.Container gap={1} width="100%">
+    <Grid.Container gap={1} width="100%" ml={0}>
       <Grid md={20} sm={22} xs>
         <Input
           css={css`

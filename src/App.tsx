@@ -3,6 +3,8 @@ import { CssBaseline, GeistProvider } from "@geist-ui/core";
 import { Route, Routes } from "react-router-dom";
 import Header from "./common/components/header/Header";
 import PageLayout from "./common/components/PageLayout";
+import OrganizationAdminPage from "./pages/admin/OrganizationAdminPage";
+import UserAdminPage from "./pages/admin/UserAdminPage";
 import AuthPage from "./pages/auth/AuthPage";
 import { selectAuth } from "./pages/auth/authSlice";
 import AuthLayout from "./pages/auth/components/AuthLayout";
@@ -29,6 +31,11 @@ const App = () => {
             <Route element={<PageLayout />}>
               <Route path="/" element={<IndexPage />} />
               <Route path="/invites/:id" element={<Invites />} />
+              <Route
+                path="/admin/organization"
+                element={<OrganizationAdminPage />}
+              />
+              <Route path="/admin/user" element={<UserAdminPage />} />
             </Route>
           ) : (
             <Route element={<AuthLayout />}>
