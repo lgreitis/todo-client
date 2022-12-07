@@ -1,5 +1,5 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
-import { Invite, InviteExtended } from "../types";
+import { Invite, InviteExtended, Tokens } from "../types";
 import customFetchBase from "../utils/customFetchBase";
 
 export const inviteApi = createApi({
@@ -45,6 +45,17 @@ export const inviteApi = createApi({
       }),
       invalidatesTags: ["invites"],
     }),
+    createUserInvite: builder.mutation<
+      Tokens,
+      { inviteId: string; email: string; username: string; password: string }
+    >({
+      query: (data) => ({
+        url: "/invite/createUser",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["invites"],
+    }),
     editInvite: builder.mutation<
       Invite,
       { id: string; expirationDate: number; disabled: boolean }
@@ -65,4 +76,5 @@ export const {
   useCreateInviteMutation,
   useGetOrganizationInvitesQuery,
   useEditInviteMutation,
+  useCreateUserInviteMutation,
 } = inviteApi;

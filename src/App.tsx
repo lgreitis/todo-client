@@ -14,6 +14,7 @@ import SignUpPage from "./pages/auth/SignUpPage";
 import Page404 from "./pages/error/Page404";
 import IndexPage from "./pages/index/IndexPage";
 import InviteAuthed from "./pages/invite/InviteAuthed";
+import InviteNew from "./pages/invite/InviteNew";
 import Invites from "./pages/invites/Invites";
 import { selectAuth } from "./slices/authSlice";
 import { selectTheme } from "./slices/themeSlice";
@@ -49,6 +50,7 @@ const App = () => {
                 </>
               ) : (
                 <Route element={<AuthLayout />}>
+                  <Route path="/invite/:id" element={<InviteNew />} />
                   <Route path="/" element={<AuthPage />} />
                   <Route path="/login" element={<LoginPage />} />
                   <Route path="/signup" element={<SignUpPage />} />

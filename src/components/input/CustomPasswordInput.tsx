@@ -8,7 +8,7 @@ interface Props {
   placeholder?: string;
 }
 
-const CustomInput = (props: FieldProps & Props) => {
+const CustomPasswordInput = (props: FieldProps & Props) => {
   const {
     field,
     form: { touched, errors },
@@ -48,4 +48,4 @@ const CustomInput = (props: FieldProps & Props) => {
   );
 };
 
-export default CustomInput;
+export default CustomPasswordInput;

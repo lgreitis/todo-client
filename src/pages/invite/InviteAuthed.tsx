@@ -28,8 +28,6 @@ const InviteAuthed = () => {
     return <Loading />;
   }
 
-  console.log(invite);
-
   if (!isLoading && !invite) {
     return <Page404 customMessage="Invite not found" />;
   }
