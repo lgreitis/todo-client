@@ -45,6 +45,17 @@ export const inviteApi = createApi({
       }),
       invalidatesTags: ["invites"],
     }),
+    editInvite: builder.mutation<
+      Invite,
+      { id: string; expirationDate: number; disabled: boolean }
+    >({
+      query: (data) => ({
+        url: "/invite",
+        method: "PATCH",
+        body: data,
+      }),
+      invalidatesTags: ["invites"],
+    }),
   }),
 });
 
@@ -53,4 +64,5 @@ export const {
   useAddUserMutation,
   useCreateInviteMutation,
   useGetOrganizationInvitesQuery,
+  useEditInviteMutation,
 } = inviteApi;

@@ -16,8 +16,6 @@ export const authApi = createApi({
       transformResponse: (response: Tokens) => {
         return response;
       },
-      transformErrorResponse: (response: { status: string | number }) =>
-        response.status,
     }),
     postRegister: builder.mutation<
       Tokens,
@@ -31,8 +29,6 @@ export const authApi = createApi({
       transformResponse: (response: Tokens) => {
         return response;
       },
-      transformErrorResponse: (response: { status: string | number }) =>
-        response.status,
     }),
   }),
 });

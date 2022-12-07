@@ -1,19 +1,41 @@
 import NiceModal, { useModal } from "@ebay/nice-modal-react";
 import { css } from "@emotion/react";
-import { Input, Modal, Popover } from "@geist-ui/core";
+import { Checkbox, Input, Modal, Popover, useToasts } from "@geist-ui/core";
 import { useState } from "react";
 import { DayPicker } from "react-day-picker";
-import { useCreateInviteMutation } from "../../../api/invitesApi";
+import { useEditInviteMutation } from "../../../api/invitesApi";
 
 interface Props {
   organizationId: string;
+  disabled: boolean;
+  expirationDate: number;
 }
 
-const CreateInviteModal = NiceModal.create((props: Props) => {
-  const { organizationId } = props;
+const EditInviteModal = NiceModal.create((props: Props) => {
+  const { organizationId, disabled, expirationDate } = props;
   const modal = useModal();
-  const [selected, setSelected] = useState<Date>();
-  const [submitInvite, { isLoading }] = useCreateInviteMutation();
+  const { setToast } = useToasts();
+  const [selected, setSelected] = useState<Date | undefined>(
+    new Date(expirationDate)
+  );
+  const [disabledState, setDisabledState] = useState(disabled);
+  const [submitEdit, { isLoading }] = useEditInviteMutation();
+
+  const submit = () => {
+    if (!selected) {
+      return;
+    }
+
+    submitEdit({
+      id: organizationId,
+      expirationDate: selected.getTime(),
+      disabled: disabledState,
+    });
+
+    setToast({ text: "Invite updated", type: "success" });
+
+    modal.remove();
+  };
 
   return (
     <Modal visible={modal.visible} onClose={modal.remove}>
@@ -48,6 +70,15 @@ const CreateInviteModal = NiceModal.create((props: Props) => {
               />
             </div>
           </Popover>
+          <Checkbox
+            pt={4 / 3}
+            scale={4 / 3}
+            width="100%"
+            onClick={() => setDisabledState((prev) => !prev)}
+            checked={disabledState}
+          >
+            Disabled?
+          </Checkbox>
         </div>
       </Modal.Content>
       <Modal.Action passive onClick={modal.remove} disabled={isLoading}>
@@ -56,20 +87,13 @@ const CreateInviteModal = NiceModal.create((props: Props) => {
       <Modal.Action
         loading={isLoading}
         onClick={() => {
-          if (!selected) {
-            return;
-          }
-          submitInvite({ expirationDate: selected.getTime(), organizationId })
-            .unwrap()
-            .then(() => {
-              modal.remove();
-            });
+          submit();
         }}
       >
-        Create
+        Update
       </Modal.Action>
     </Modal>
   );
 });
 
-export default CreateInviteModal;
+export default EditInviteModal;

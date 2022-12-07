@@ -9,6 +9,7 @@ import CustomInput from "../../components/input/CustomInput";
 import CustomPasswordInput from "../../components/input/CustomPasswordInput";
 import { login } from "../../slices/authSlice";
 import { useAppDispatch } from "../../store";
+import { isApiResponse } from "../../utils/customFetchBase";
 
 export const LoginUserSchema = z
   .object({ email: z.string().email(), password: z.string() })
@@ -17,7 +18,7 @@ export const LoginUserSchema = z
 const LoginPage = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const [submitLogin, { isLoading, isError }] = usePostLoginMutation();
+  const [submitLogin, { isLoading, error }] = usePostLoginMutation();
 
   return (
     <>
@@ -58,9 +59,9 @@ const LoginPage = () => {
                   component={CustomPasswordInput}
                 />
               </Grid>
-              {isError && (
+              {isApiResponse(error) && (
                 <Text span type="error">
-                  Failed to login, check your information
+                  {error.data.message}
                 </Text>
               )}
               <Grid>

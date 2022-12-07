@@ -9,6 +9,7 @@ import CustomInput from "../../components/input/CustomInput";
 import CustomPasswordInput from "../../components/input/CustomPasswordInput";
 import { login } from "../../slices/authSlice";
 import { useAppDispatch } from "../../store";
+import { isApiResponse } from "../../utils/customFetchBase";
 
 export const CreateUserSchema = z
   .object({
@@ -26,7 +27,7 @@ export const CreateUserSchema = z
 const SignUpPage = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const [submitRegister, { isLoading, isError }] = usePostRegisterMutation();
+  const [submitRegister, { isLoading, error }] = usePostRegisterMutation();
 
   return (
     <>
@@ -94,9 +95,9 @@ const SignUpPage = () => {
                   component={CustomPasswordInput}
                 />
               </Grid>
-              {isError && (
+              {isApiResponse(error) && (
                 <Text span type="error">
-                  Failed to register, if you have an account please login
+                  {error.data.message}
                 </Text>
               )}
               <Grid>

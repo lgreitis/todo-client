@@ -1,13 +1,23 @@
 import NiceModal from "@ebay/nice-modal-react";
 import { css } from "@emotion/react";
-import { Button, Code, Grid, Table, Text, useTheme } from "@geist-ui/core";
-import { Copy, Edit2, ToggleRight, Trash } from "@geist-ui/icons";
+import {
+  Button,
+  Code,
+  Grid,
+  Loading,
+  Table,
+  Text,
+  useTheme,
+  useToasts,
+} from "@geist-ui/core";
+import { Copy, Edit2 } from "@geist-ui/icons";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useGetOrganizationInvitesQuery } from "../../api/invitesApi";
 import SmallButtonWithToggle from "../../components/SmallButtonWithTooltip";
 import Page404 from "../error/Page404";
 import CreateInviteModal from "./modals/CreateInvite";
+import EditInviteModal from "./modals/EditInvite";
 
 interface TableData {
   id: string;
@@ -16,10 +26,26 @@ interface TableData {
   expirationDate: string;
   usersInvited: string;
   operations: string;
+  disabledRaw: boolean;
+  expirationDateRaw: number;
 }
 
 const Controls = (value: unknown, rowData: TableData) => {
   const theme = useTheme();
+  const { setToast } = useToasts();
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(`http://127.0.0.1:5173/invite/${rowData.id}`);
+    setToast({ text: "Copied to clipboard", type: "success" });
+  };
+
+  const handleEdit = () => {
+    NiceModal.show(EditInviteModal, {
+      organizationId: rowData.id,
+      disabled: rowData.disabledRaw,
+      expirationDate: rowData.expirationDateRaw,
+    });
+  };
 
   return (
     <div
@@ -28,13 +54,16 @@ const Controls = (value: unknown, rowData: TableData) => {
         gap: ${theme.layout.gapQuarter};
       `}
     >
-      <SmallButtonWithToggle tooltipText="Edit" icon={<Edit2 />} />
-      <SmallButtonWithToggle tooltipText="Delete" icon={<Trash />} />
       <SmallButtonWithToggle
-        tooltipText={rowData.disabled ? "Enable" : "Disable"}
-        icon={rowData.disabled ? <ToggleRight /> : <ToggleRight />}
+        tooltipText="Edit"
+        icon={<Edit2 />}
+        onClick={handleEdit}
       />
-      <SmallButtonWithToggle tooltipText="Copy link" icon={<Copy />} />
+      <SmallButtonWithToggle
+        tooltipText="Copy link"
+        icon={<Copy />}
+        onClick={handleCopy}
+      />
     </div>
   );
 };
@@ -46,7 +75,7 @@ const Invites = () => {
     return <Page404 />;
   }
 
-  const { data, isLoading } = useGetOrganizationInvitesQuery(id);
+  const { data, isLoading, isFetching } = useGetOrganizationInvitesQuery(id);
 
   const [invites, setInvites] = useState<TableData[]>([]);
 
@@ -65,6 +94,8 @@ const Invites = () => {
         id: el.id,
         operations: "",
         usersInvited: el._count.usersInvited.toString(),
+        disabledRaw: el.disabled,
+        expirationDateRaw: parseInt(el.expirationDate),
       };
     });
 
@@ -96,6 +127,7 @@ const Invites = () => {
           New invite
         </Button>
       </Grid.Container>
+      <Grid margin={0.5}>{(isLoading || isFetching) && <Loading />}</Grid>
       <Table data={invites}>
         <Table.Column prop="id" label="id" />
         <Table.Column prop="dateCreated" label="date created" />
