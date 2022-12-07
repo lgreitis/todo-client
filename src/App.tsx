@@ -1,5 +1,6 @@
 import NiceModal from "@ebay/nice-modal-react";
 import { CssBaseline, GeistProvider } from "@geist-ui/core";
+import "react-day-picker/dist/style.css";
 import { Route, Routes } from "react-router-dom";
 import AuthMiddleware from "./components/AuthMiddleware";
 import Header from "./components/header/Header";
@@ -12,6 +13,7 @@ import LoginPage from "./pages/auth/LoginPage";
 import SignUpPage from "./pages/auth/SignUpPage";
 import Page404 from "./pages/error/Page404";
 import IndexPage from "./pages/index/IndexPage";
+import InviteAuthed from "./pages/invite/InviteAuthed";
 import Invites from "./pages/invites/Invites";
 import { selectAuth } from "./slices/authSlice";
 import { selectTheme } from "./slices/themeSlice";
@@ -31,15 +33,20 @@ const App = () => {
             <Routes>
               <Route path="*" element={<Page404 />} />
               {auth.refreshToken ? (
-                <Route element={<PageLayout />}>
-                  <Route path="/" element={<IndexPage />} />
-                  <Route path="/invites/:id" element={<Invites />} />
-                  <Route
-                    path="/admin/organization"
-                    element={<OrganizationAdminPage />}
-                  />
-                  <Route path="/admin/user" element={<UserAdminPage />} />
-                </Route>
+                <>
+                  <Route element={<AuthLayout />}>
+                    <Route path="/invite/:id" element={<InviteAuthed />} />
+                  </Route>
+                  <Route element={<PageLayout />}>
+                    <Route path="/" element={<IndexPage />} />
+                    <Route path="/invites/:id" element={<Invites />} />
+                    <Route
+                      path="/admin/organization"
+                      element={<OrganizationAdminPage />}
+                    />
+                    <Route path="/admin/user" element={<UserAdminPage />} />
+                  </Route>
+                </>
               ) : (
                 <Route element={<AuthLayout />}>
                   <Route path="/" element={<AuthPage />} />

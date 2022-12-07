@@ -39,9 +39,7 @@ const Header = () => {
   const theme = useTheme();
   const user = useAppSelector(selectUser);
   const navigate = useNavigate();
-  const isSM = useMediaQuery("sm");
   const isXS = useMediaQuery("xs");
-  const isSmall = isSM || isXS;
 
   const [open, setOpen] = useState(false);
 
@@ -59,13 +57,13 @@ const Header = () => {
               navigate("/");
             }}
           />
-          {isSmall && user.id ? (
+          {isXS && user.id ? (
             <HamburgerButton onClick={() => setOpen((prev) => !prev)} />
           ) : (
             <HeaderDesktop />
           )}
         </div>
-        {open && isSmall && <HeaderMobile hidePanel={() => setOpen(false)} />}
+        {open && isXS && <HeaderMobile hidePanel={() => setOpen(false)} />}
       </nav>
     </div>
   );

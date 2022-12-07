@@ -32,6 +32,9 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
           :root {
             --page-nav-height: 64px;
           }
+          .tooltip-content {
+            z-index: 999999 !important;
+          }
         `}
       />
 

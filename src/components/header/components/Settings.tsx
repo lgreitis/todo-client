@@ -54,6 +54,7 @@ const Settings = () => {
       css={css`
         .tooltip {
           display: flex !important;
+          cursor: pointer;
         }
       `}
     >

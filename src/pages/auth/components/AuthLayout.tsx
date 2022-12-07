@@ -1,6 +1,7 @@
 import { css } from "@emotion/react";
 import { useTheme } from "@geist-ui/core";
 import { Outlet } from "react-router-dom";
+import Footer from "./Footer";
 
 const AuthLayout = () => {
   const theme = useTheme();
@@ -17,7 +18,13 @@ const AuthLayout = () => {
     >
       <div
         css={css`
+          flex: 1;
+        `}
+      ></div>
+      <div
+        css={css`
           max-width: 300px;
+
           width: 100%;
           display: flex;
           flex-direction: column;
@@ -27,6 +34,7 @@ const AuthLayout = () => {
       >
         <Outlet />
       </div>
+      <Footer />
     </div>
   );
 };

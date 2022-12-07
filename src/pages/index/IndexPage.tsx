@@ -93,6 +93,7 @@ const IndexPage = () => {
               id={el.id}
               fileCount={el._count.files}
               name={el.name}
+              ownerUserId={el.ownerUserId}
               ownerName={el.ownerUser.username}
               userCount={el._count.users}
             />

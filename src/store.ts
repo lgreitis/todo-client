@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import { authApi } from "./api/authApi";
+import { inviteApi } from "./api/invitesApi";
 import { organizationApi } from "./api/organizationApi";
 import { userApi } from "./api/userApi";
 import authSlice from "./slices/authSlice";
@@ -15,12 +16,14 @@ const store = configureStore({
     [userApi.reducerPath]: userApi.reducer,
     [authApi.reducerPath]: authApi.reducer,
     [organizationApi.reducerPath]: organizationApi.reducer,
+    [inviteApi.reducerPath]: inviteApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
       .concat(organizationApi.middleware)
       .concat(userApi.middleware)
-      .concat(authApi.middleware),
+      .concat(authApi.middleware)
+      .concat(inviteApi.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

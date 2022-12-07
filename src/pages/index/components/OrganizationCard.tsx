@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 import { useDeleteOrganizationMutation } from "../../../api/organizationApi";
 import SmallButtonWithToggle from "../../../components/SmallButtonWithTooltip";
 import ConfirmDelete from "../../../modals/ConfirmDelete";
+import { selectUser } from "../../../slices/userSlice";
+import { useAppSelector } from "../../../store";
 import EditOrganization from "../modals/EditOrganization";
 
 const cardCss = (theme: GeistUIThemes) => css`
@@ -42,6 +44,7 @@ const bottomCss = css`
 interface Props {
   name: string;
   ownerName: string;
+  ownerUserId: string;
   userCount: number;
   fileCount: number;
   id: string;
@@ -51,9 +54,11 @@ interface Props {
 const OrganizationCard = (props: Props) => {
   const theme = useTheme();
   const navigate = useNavigate();
+  const user = useAppSelector(selectUser);
   const { setToast } = useToasts();
   const [submitDelete] = useDeleteOrganizationMutation();
-  const { name, ownerName, userCount, fileCount, id, onClick } = props;
+  const { name, ownerName, ownerUserId, userCount, fileCount, id, onClick } =
+    props;
 
   return (
     <Card hoverable width="100%" onClick={onClick} css={cardCss(theme)}>
@@ -92,48 +97,50 @@ const OrganizationCard = (props: Props) => {
               Files: {fileCount}
             </Text>
           </div>
-          <div
-            css={css`
-              display: flex;
-              gap: ${theme.layout.gapQuarter};
-            `}
-          >
-            <SmallButtonWithToggle
-              tooltipText="Invites"
-              icon={<MessageSquare />}
-              onClick={() => {
-                navigate(`/invites/${id}`);
-              }}
-            />
-            <SmallButtonWithToggle
-              tooltipText="Edit"
-              icon={<Edit2 />}
-              onClick={() => {
-                NiceModal.show(EditOrganization, { id, name });
-              }}
-            />
-            <SmallButtonWithToggle
-              tooltipText="Delete"
-              icon={<Trash />}
-              onClick={() => {
-                NiceModal.show(ConfirmDelete, {
-                  itemType: "organization",
-                  confirm: () => {
-                    submitDelete(id)
-                      .unwrap()
-                      .then(() => {
-                        setToast({
-                          text: "Organization removed",
-                          type: "success",
+          {user.id === ownerUserId && (
+            <div
+              css={css`
+                display: flex;
+                gap: ${theme.layout.gapQuarter};
+              `}
+            >
+              <SmallButtonWithToggle
+                tooltipText="Invites"
+                icon={<MessageSquare />}
+                onClick={() => {
+                  navigate(`/invites/${id}`);
+                }}
+              />
+              <SmallButtonWithToggle
+                tooltipText="Edit"
+                icon={<Edit2 />}
+                onClick={() => {
+                  NiceModal.show(EditOrganization, { id, name });
+                }}
+              />
+              <SmallButtonWithToggle
+                tooltipText="Delete"
+                icon={<Trash />}
+                onClick={() => {
+                  NiceModal.show(ConfirmDelete, {
+                    itemType: "organization",
+                    confirm: () => {
+                      submitDelete(id)
+                        .unwrap()
+                        .then(() => {
+                          setToast({
+                            text: "Organization removed",
+                            type: "success",
+                          });
                         });
-                      });
 
-                    NiceModal.hide(ConfirmDelete);
-                  },
-                });
-              }}
-            />
-          </div>
+                      NiceModal.hide(ConfirmDelete);
+                    },
+                  });
+                }}
+              />
+            </div>
+          )}
         </div>
       </div>
     </Card>
