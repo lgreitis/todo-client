@@ -1,9 +1,10 @@
 import { css } from "@emotion/react";
-import { GeistUIThemes, Popover, useTheme } from "@geist-ui/core";
-import { LogOut, Moon, Settings as SettingsIcon, Sun } from "@geist-ui/icons";
+import { Avatar, GeistUIThemes, Popover, useTheme } from "@geist-ui/core";
+import { LogOut, Moon, Sun } from "@geist-ui/icons";
 import { useDispatch } from "react-redux";
 import { logout } from "../../../slices/authSlice";
 import { selectTheme, toggleTheme } from "../../../slices/themeSlice";
+import { selectUser } from "../../../slices/userSlice";
 import { useAppSelector } from "../../../store";
 
 const buttonCss = (theme: GeistUIThemes) =>
@@ -25,6 +26,7 @@ const Settings = () => {
   const color = useAppSelector(selectTheme).color;
   const theme = useTheme();
   const dispatch = useDispatch();
+  const user = useAppSelector(selectUser);
 
   const content = () => (
     <>
@@ -69,7 +71,11 @@ const Settings = () => {
           }
         `}
       >
-        <SettingsIcon />
+        <Avatar
+          h={1.25}
+          w={1.25}
+          src={`https://avatars.dicebear.com/api/bottts/${user.id}.svg`}
+        ></Avatar>
       </Popover>
     </div>
   );

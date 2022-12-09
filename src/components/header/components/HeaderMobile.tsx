@@ -108,7 +108,7 @@ const HeaderMobile = (props: Props) => {
               }}
             >
               {el.label}
-            </button>{" "}
+            </button>
           </div>
         ))}
       <div

@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import { authApi } from "./api/authApi";
+import { directoryApi } from "./api/directoryApi";
 import { inviteApi } from "./api/invitesApi";
 import { organizationApi } from "./api/organizationApi";
 import { userApi } from "./api/userApi";
@@ -17,12 +18,14 @@ const store = configureStore({
     [authApi.reducerPath]: authApi.reducer,
     [organizationApi.reducerPath]: organizationApi.reducer,
     [inviteApi.reducerPath]: inviteApi.reducer,
+    [directoryApi.reducerPath]: directoryApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
       .concat(organizationApi.middleware)
       .concat(userApi.middleware)
       .concat(authApi.middleware)
+      .concat(directoryApi.middleware)
       .concat(inviteApi.middleware),
 });
 

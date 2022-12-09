@@ -34,3 +34,12 @@ export interface Invite {
 export interface InviteExtended extends Invite {
   _count: { usersInvited: number };
 }
+
+export interface TreeElement {
+  title: string;
+  key: string;
+  parentId: string;
+  isLeaf: boolean;
+  type: "folder" | "file";
+  children: TreeElement[];
+}

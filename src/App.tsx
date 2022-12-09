@@ -11,6 +11,8 @@ import AuthPage from "./pages/auth/AuthPage";
 import AuthLayout from "./pages/auth/components/AuthLayout";
 import LoginPage from "./pages/auth/LoginPage";
 import SignUpPage from "./pages/auth/SignUpPage";
+import EditorLayout from "./pages/editor/components/EditorLayout";
+import EditorPage from "./pages/editor/EditorPage";
 import Page404 from "./pages/error/Page404";
 import IndexPage from "./pages/index/IndexPage";
 import InviteAuthed from "./pages/invite/InviteAuthed";
@@ -46,6 +48,9 @@ const App = () => {
                       element={<OrganizationAdminPage />}
                     />
                     <Route path="/admin/user" element={<UserAdminPage />} />
+                  </Route>
+                  <Route element={<EditorLayout />}>
+                    <Route path="/editor/:id" element={<EditorPage />} />
                   </Route>
                 </>
               ) : (

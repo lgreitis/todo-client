@@ -61,9 +61,9 @@ const OrganizationCard = (props: Props) => {
     props;
 
   return (
-    <Card hoverable width="100%" onClick={onClick} css={cardCss(theme)}>
+    <Card hoverable width="100%" css={cardCss(theme)}>
       <div css={mainContainerCss}>
-        <div css={topCss(theme)}>
+        <div css={topCss(theme)} onClick={onClick}>
           <div
             css={css`
               display: flex;
@@ -101,6 +101,7 @@ const OrganizationCard = (props: Props) => {
             <div
               css={css`
                 display: flex;
+                z-index: 4;
                 gap: ${theme.layout.gapQuarter};
               `}
             >

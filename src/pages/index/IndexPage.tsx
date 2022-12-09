@@ -13,6 +13,7 @@ import {
 import { Plus, Search } from "@geist-ui/icons";
 import Fuse from "fuse.js";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useGetOrganizationsQuery } from "../../api/organizationApi";
 import { selectUser } from "../../slices/userSlice";
 import { useAppSelector } from "../../store";
@@ -22,11 +23,12 @@ import AddNewOrganization from "./modals/AddNewOrganization";
 
 const IndexPage = () => {
   const theme = useTheme();
+  const navigate = useNavigate();
+  const user = useAppSelector(selectUser);
+
   const isSM = useMediaQuery("sm");
   const isXS = useMediaQuery("xs");
   const isSmall = isSM || isXS;
-
-  const user = useAppSelector(selectUser);
 
   const {
     isLoading,
@@ -96,6 +98,7 @@ const IndexPage = () => {
               ownerUserId={el.ownerUserId}
               ownerName={el.ownerUser.username}
               userCount={el._count.users}
+              onClick={() => navigate(`/editor/${el.id}`)}
             />
           </Grid>
         ))}

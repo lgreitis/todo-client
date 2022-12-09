@@ -25,6 +25,7 @@ const CustomInput = (props: FieldProps & Props) => {
         display: flex;
         flex-direction: column;
         justify-content: left;
+        width: ${width};
       `}
     >
       <Input

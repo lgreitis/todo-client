@@ -12,3 +12,10 @@ export const CreateUserSchema = z
     message: "Passwords don't match",
     path: ["confirmPassword"],
   });
+
+const ItemEnumSchema = z.enum(["file", "folder"]);
+
+export const CreateItemSchema = z.object({
+  type: ItemEnumSchema,
+  name: z.string(),
+});
