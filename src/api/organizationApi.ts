@@ -17,6 +17,15 @@ export const organizationApi = createApi({
       transformResponse: (result: Organization[]) => result,
       providesTags: ["organization"],
     }),
+    getOrganization: builder.query<Organization, string>({
+      query(id) {
+        return {
+          url: `/organization/${id}`,
+          cache: "no-cache",
+        };
+      },
+      transformResponse: (result: Organization) => result,
+    }),
     getOrganizationsSuperAdmin: builder.query<Organization[], void>({
       query() {
         return {
@@ -58,6 +67,7 @@ export const organizationApi = createApi({
 });
 
 export const {
+  useGetOrganizationQuery,
   useGetOrganizationsQuery,
   useGetOrganizationsSuperAdminQuery,
   usePostOrganizationMutation,

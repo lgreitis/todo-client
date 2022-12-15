@@ -82,11 +82,7 @@ const OrganizationAdminPage = () => {
 
 export default OrganizationAdminPage;
 
-const Controls = (
-  value: string | number | boolean,
-  rowData: TableData,
-  rowIndex: number
-) => {
+const Controls = (value: string | number | boolean, rowData: TableData) => {
   const { setToast } = useToasts();
   const theme = useTheme();
   const [submitDelete] = useDeleteOrganizationMutation();

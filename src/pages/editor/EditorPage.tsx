@@ -1,7 +1,9 @@
 import { css } from "@emotion/react";
-import { Text, useTheme } from "@geist-ui/core";
+import { Loading, Text, useTheme } from "@geist-ui/core";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
+import { useGetOrganizationQuery } from "../../api/organizationApi";
+import { isApiResponse } from "../../utils/customFetchBase";
 import Page404 from "../error/Page404";
 import EditorContainer from "./components/EditorContainer";
 import EditorSidebar from "./components/EditorSidebar";
@@ -13,6 +15,24 @@ const EditorPage = () => {
 
   if (!id) {
     return <Page404 />;
+  }
+
+  const { error, isLoading } = useGetOrganizationQuery(id);
+
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  if (isApiResponse(error) && error.status === 404) {
+    return (
+      <div
+        css={css`
+          width: 100%;
+        `}
+      >
+        <Page404 />
+      </div>
+    );
   }
 
   console.log(selected);

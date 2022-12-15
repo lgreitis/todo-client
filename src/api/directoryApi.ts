@@ -67,6 +67,23 @@ export const directoryApi = createApi({
       transformResponse: (response: { items: Direcory[] }) =>
         transformResponseData(response),
     }),
+    editDirectoryItem: builder.mutation<
+      TreeElement[],
+      {
+        name: string;
+        type: "file" | "folder";
+        id: string;
+      }
+    >({
+      query: (data) => ({
+        url: "/directory",
+        cache: "no-cache",
+        method: "PATCH",
+        body: data,
+      }),
+      transformResponse: (response: { items: Direcory[] }) =>
+        transformResponseData(response),
+    }),
     deleteDirectoryItem: builder.mutation<
       TreeElement[],
       {
@@ -88,5 +105,6 @@ export const directoryApi = createApi({
 export const {
   useGetDirectoryRootQuery,
   useCreateDirectoryItemMutation,
+  useEditDirectoryItemMutation,
   useDeleteDirectoryItemMutation,
 } = directoryApi;

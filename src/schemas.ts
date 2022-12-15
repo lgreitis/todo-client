@@ -19,3 +19,7 @@ export const CreateItemSchema = z.object({
   type: ItemEnumSchema,
   name: z.string(),
 });
+
+export const EditItemSchema = z.object({
+  name: z.string(),
+});

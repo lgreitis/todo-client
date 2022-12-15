@@ -16,6 +16,7 @@ import ConfirmDelete from "../../../modals/ConfirmDelete";
 import { useAppDispatch } from "../../../store";
 import { TreeElement } from "../../../types";
 import CreateDirectoryItemModal from "../modals/CreateDirectoryItemModal";
+import EditDirectoryItemModal from "../modals/EditDirectoryItemMocal";
 import EditorContextMenu from "./EditorContextMenu";
 
 const treeCss = (theme: GeistUIThemes) => css`
@@ -107,14 +108,9 @@ const EditorSidebar = (props: Props) => {
     id: "context",
   });
 
-  const {
-    data: root,
-    isLoading: isRootLoading,
-    error: rootError,
-  } = useGetDirectoryRootQuery(id);
+  const { data: root, isLoading: isRootLoading } = useGetDirectoryRootQuery(id);
 
-  const [submitDelete, { isLoading: isDeleteLoading, error: deleteError }] =
-    useDeleteDirectoryItemMutation();
+  const [submitDelete] = useDeleteDirectoryItemMutation();
 
   useEffect(() => {
     if (!root) {
@@ -138,6 +134,7 @@ const EditorSidebar = (props: Props) => {
     setData((state) => updateTreeData(state, el.key, res));
   };
 
+  // TODO: rewrite this
   const handleItemClick = (
     args: ItemParams<EventDataNode<TreeElement>, void>
   ) => {
@@ -174,6 +171,25 @@ const EditorSidebar = (props: Props) => {
               // eslint-disable-next-line @typescript-eslint/ban-ts-comment
               // @ts-ignore
               setData((state) => updateTreeData(state, args.props.key, data));
+            } else {
+              setData((state) => updateRoot(state, data));
+            }
+          },
+        });
+        break;
+      }
+      case "edit": {
+        NiceModal.show(EditDirectoryItemModal, {
+          id: args.props.key,
+          name: args.props.title,
+          type: args.props.type,
+          onSuccess: (data: TreeElement[]) => {
+            if (args.props && args.props.parentId) {
+              setData((state) =>
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                updateTreeData(state, args.props?.parentId, data)
+              );
             } else {
               setData((state) => updateRoot(state, data));
             }

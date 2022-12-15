@@ -32,6 +32,9 @@ const EditorContextMenu = (props: Props) => {
       <Item onClick={handleClick} id="new">
         Add new item
       </Item>
+      <Item onClick={handleClick} id="edit">
+        Edit item
+      </Item>
       <Item onClick={handleClick} id="remove">
         Remove Item
       </Item>
